@@ -12,15 +12,20 @@
  */
 #include "settings.h"
 
-char *TopicRoot = "DiningRoom";
+//char *TopicRoot = "DiningRoom";
 char *Topic0Root = "Temp";
 char *Topic1Root = "RSSI";
 
 void BuildMQTTMsg()
 {
+  Serial.println("BuildMQTTMsg");  
+
   //***********Setup Topic0 topic name**************
-  strcpy(Topic0,TopicRoot);
+  strcpy(Topic0, mqtt_topic);
   strcat(Topic0, "/");
+  Serial.print("Topic0");  
+  Serial.println(Topic0);  
+
   strcat(Topic0, device_id);
  // strcat(Topic0, "/");  
   //strcat(Topic0, Topic0Root);  
@@ -51,7 +56,8 @@ void BuildMQTTMsg()
 
 /************************************************
   ***********Setup Topic1 topic name ***********/
-  strcpy(Topic1,TopicRoot);
+  //strcpy(Topic1,TopicRoot);
+  strcpy(Topic1, mqtt_topic);
   strcat(Topic1, "/");
   strcat(Topic1, device_id);
   strcat(Topic1, "/");  

@@ -48,6 +48,8 @@ void ReadConfigFile(void)
           strcpy(mqtt_server,   json["mqtt_server"]);
           strcpy(mqtt_user,     json["mqtt_user"]);
           strcpy(mqtt_password, json["mqtt_password"]);
+          strcpy(mqtt_topic,    json["mqtt_topic"]);
+
         } 
         else 
         {
@@ -77,6 +79,7 @@ void WriteConfigFile(void)
     json["mqtt_server"] = mqtt_server;
     json["mqtt_user"] = mqtt_user;
     json["mqtt_password"] = mqtt_password;
+    json["mqtt_topic"] = mqtt_topic;
 
     File configFile = SPIFFS.open("/config.json", "w");
     if (!configFile) {
@@ -108,6 +111,7 @@ void SetupWifi(void)
     WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
     WiFiManagerParameter custom_mqtt_user("user",   "mqtt user",   mqtt_user, 40);
     WiFiManagerParameter custom_mqtt_password("password", "mqtt password", mqtt_password, 40);
+    WiFiManagerParameter custom_mqtt_topic("topic", "mqtt_topic", mqtt_topic, 40);
     
     //WiFiManager
     //Local intialization. Once its business is done, there is no need to keep it around
@@ -135,6 +139,7 @@ void SetupWifi(void)
     wifiManager.addParameter(&custom_mqtt_server);
     wifiManager.addParameter(&custom_mqtt_user);
     wifiManager.addParameter(&custom_mqtt_password);
+    wifiManager.addParameter(&custom_mqtt_topic);
 
     if (!wifiManager.startConfigPortal("OnDemandAP")) {
       Serial.println("failed to connect and hit timeout");
@@ -150,10 +155,13 @@ void SetupWifi(void)
     strcpy(mqtt_server, custom_mqtt_server.getValue());
     strcpy(mqtt_user, custom_mqtt_user.getValue());
     strcpy(mqtt_password, custom_mqtt_password.getValue());
+    strcpy(mqtt_topic, custom_mqtt_topic.getValue());
+
     Serial.println("The values in the file are: ");
     Serial.println("\tmqtt_server : " + String(mqtt_server));
     Serial.println("\tmqtt_user : " + String(mqtt_user));
     Serial.println("\tmqtt_pw : " + String(mqtt_password));
+    Serial.println("\tmqtt_topic : " + String(mqtt_topic));
 
     WriteConfigFile();
   }

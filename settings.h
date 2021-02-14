@@ -44,6 +44,7 @@ bool TimedOut = FALSE;
 char mqtt_server[40];
 char mqtt_user[40];
 char mqtt_password[40];
+char mqtt_topic[40];
 
 //flag for saving data
 bool shouldSaveConfig = false;

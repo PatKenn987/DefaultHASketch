@@ -29,10 +29,10 @@ void setup() {
   sensorState = UN_INIT;
   pinMode(TRIGGER_PIN, INPUT_PULLUP);
   Serial.begin(115200);
-  BuildMQTTMsg();
   delay(1000);
   SetupWifi();
   delay(5000);
+  BuildMQTTMsg();
   client.setServer(mqtt_server, MQTT_PORT);
   client.setCallback(mqtt_callback);// Initialize the callback routine
   Device = OFF;
@@ -79,6 +79,8 @@ void loop() {
      UpdateSensorData();
      PublishRSSI();
      lastMsg = now;
+     Serial.print("mqtt_topic = ");
+     Serial.println(mqtt_topic);
    }
    delay(1000);
 }
