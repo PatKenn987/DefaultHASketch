@@ -2,7 +2,6 @@
 
 #define DEBUG 0
 
-
 void PublishRSSI(void)
 {
   StaticJsonBuffer<200> jsonBuffer;
@@ -21,10 +20,34 @@ void PublishRSSI(void)
   client.publish(Topic1, data, true);
   yield();
 }
+
+void GetMACAddres(void)
+{
+  byte mac[7];                     // the MAC address of your Wifi shield
+  WiFi.macAddress(mac);
+  Serial.print("MAC: ");
+  Serial.print(mac[5],HEX);
+  Serial.print(":");
+  Serial.print(mac[4],HEX);
+  Serial.print(":");
+  Serial.print(mac[3],HEX);
+  Serial.print(":");
+  Serial.print(mac[2],HEX);
+  Serial.print(":");
+  Serial.print(mac[1],HEX);
+  Serial.print(":");
+  Serial.println(mac[0],HEX);
+  mac[6] = 0x00;
+  
+  sprintf(device_id, "%2.2X%2.2X%2.2X%2.2X",mac[3], mac[2], mac[1], mac[0]);
+  Serial.print("device_id = ");
+  Serial.println(device_id);
+}
+
 /*
 void GetConnectionInfo(void)
 {
-  WiFi.macAddress(ConInfo.macAddr);
+    WiFi.macAddress(ConInfo.macAddr);
     Serial.printf("RSSI: %d dBm\n", WiFi.RSSI());
 
     if(1 == DEBUG){
@@ -61,6 +84,5 @@ void GetConnectionInfo(void)
     }
 }
 */
-
 
 

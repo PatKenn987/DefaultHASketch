@@ -26,16 +26,23 @@ enum DeviceState Device;
 long lastMsg = 0;
 
 void setup() {
-  sensorState = UN_INIT;
-  pinMode(TRIGGER_PIN, INPUT_PULLUP);
-  Serial.begin(115200);
-  delay(1000);
-  SetupWifi();
+  sensorState = UN_INIT;                //Set the initial state of the internal state machine
+  pinMode(TRIGGER_PIN, INPUT_PULLUP);   //Setup the pin that will enable WiFi Mgr mode
+  Serial.begin(115200);                 //Enable serial port at 115.2 KBaud
+  delay(1000);             
+          
+  /*******WiFi Setup *******************/       
+  SetupWifi();                          //WiFi Mgr call to Init WiFi from non-vol data (or invoke AP Mode)
   delay(5000);
-  BuildMQTTMsg();
-  client.setServer(mqtt_server, MQTT_PORT);
-  client.setCallback(mqtt_callback);// Initialize the callback routine
-  Device = OFF;
+  
+  /*******MQTT Setup *******************/
+  BuildMQTTMsg();                       //Build all of the MQTT messages for the sensor
+  client.setServer(mqtt_server, MQTT_PORT); 
+  client.setCallback(mqtt_callback); // Initialize the callback routine
+
+  /*******Initialize state variables *******************/  
+  Device = OFF;                       //Initialize the device to off
+  
   sensorState = ENABLED;
   timeClient.begin();   //Start NTP Client
   dht.setup(DHTPIN, DHTesp::DHT11); // Connect DHT sensor
